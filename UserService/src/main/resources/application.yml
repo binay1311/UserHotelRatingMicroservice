@@ -1,9 +1,35 @@
+server:
+  port: 8081
+  error:
+    include-message: always
+
 spring:
+  application:
+    name: USER-SERVICE
+
   datasource:
     url: jdbc:postgresql://localhost:5432/userdb
-    username:
-    password:
+    username: postgres
+    password: admin
 
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+      format_sql: true
+
+eureka:
+  instance:
+    prefer-ip-address: true
+
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8080/eureka
 
 management:
   health:
@@ -30,3 +56,17 @@ resilience4j:
         permitted-number-of-calls-in-half-open-state: 3
         sliding-window-size: 10
         sliding-window-type: COUNT_BASED
+
+  retry:
+    instances:
+      ratingHotelService:
+        maxAttempts: 3
+#        maxRetryAttempts: 3
+        waitDuration: 2s
+
+  ratelimiter:
+    instances:
+      userRateLimiter:
+        limitForPeriod: 2
+        limitRefreshPeriod: 10s
+        timeoutDuration: 0s

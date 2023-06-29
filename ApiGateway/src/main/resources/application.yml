@@ -22,7 +22,7 @@ spring:
           predicates:
             - Path=/users/**
 
-        - id: HOTEL-
+        - id: HOTEL-SERVICE
           uri: lb://HOTEL-SERVICE
           predicates:
             - Path=/hotels/**
